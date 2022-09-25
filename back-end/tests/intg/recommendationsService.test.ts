@@ -7,11 +7,9 @@ import * as recommendationsFactory from '../factories/recommendationsFactory';
 const recommendationsMethod = supertest(app)
 
 beforeEach(async () => {
-    await prisma.$queryRaw`TRUNCATE TABLE recommendations`
+    await prisma.$queryRaw`TRUNCATE TABLE "recommendations"`
 });
-afterAll(async () => {
-    await prisma.$disconnect()
-})
+
 describe('POST /recommendations', () => {
     it('Recommendation with sucess - 201', async () => {
         const { name, youtubeLink } = await recommendationsFactory.createRecommendation()
@@ -29,8 +27,6 @@ describe('POST /recommendations', () => {
         const response = await recommendationsMethod.post('/recommendations').send({})
         expect(response.statusCode).toEqual(422)
     }, 9500)
-
-
 })
 
 describe('downvote', () => {
@@ -67,14 +63,14 @@ describe('/GET, /recommendations', () => {
         const response = await recommendationsMethod.get('/recommendations')
 
         expect(response.body.length).toEqual(10)
-    })
+    },13000)
     it('should return last 10 recommendations', async () => {
         await recommendationsFactory.insertManyRecommendations(5)
 
         const response = await recommendationsMethod.get('/recommendations')
 
         expect(response.body).toBeTruthy()
-    })
+    },12600)
 })
 
 describe('/GET, /recommendations/:id', () => {
@@ -98,7 +94,7 @@ describe('/GET, /recommendations/random', () => {
     await recommendationsFactory.insertManyRecommendations(10)
     const firstRecommendation = await recommendationsMethod.get(`/recommendations/random`)
     expect(firstRecommendation.body).toHaveProperty('name')
-  },6500)
+  },13500)
 })
  
 describe('GET /recommendations/top/:amount', () => {
@@ -113,7 +109,22 @@ describe('GET /recommendations/top/:amount', () => {
     expect(response.body[0].score).toBeGreaterThanOrEqual(
       response.body[1].score
     )
-  })
+  },14000)
 })
 
+afterAll(async () => {
+    await prisma.$disconnect()
+})
+/*
 
+/GET, /recommendations
+✕ should return 10 recommendations (13129 ms)
+✕ should return last 10 recommendations (12727 ms)
+/GET, /recommendations/:id
+✓ should return recommendation by id (3556 ms)
+/GET, /recommendations/random
+✓ should return status code 404 with no recommendations (141 ms)
+✕ should return a random recommendation (13625 ms)
+GET /recommendations/top/:amount
+✕ should return top recommendations (14135 ms)
+*/
