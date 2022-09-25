@@ -5,7 +5,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx prisma migrate reset && nodemon src/server.ts"
+    "build": "tsc",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.ts",
+    "prisma:reset": "prisma migrate reset",
+    "prisma:migrate": "prisma migrate dev",
+    "test": "dotenv -e .env.test -- npx prisma migrate dev",
+    "test:unit": "clear && dotenv -e .env.test cross-env NODE_OPTIONS=--experimental-vm-modules jest -- -i --coverage --testPathPattern=tests/unit",
+    "test:intg": "dotenv -e .env.test prisma migrate dev && cross-env NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --testPathPattern=./tests/intg"
+
   },
   "keywords": [],
   "author": "",
@@ -34,6 +42,7 @@
   "dependencies": {
     "@prisma/client": "^4.3.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
