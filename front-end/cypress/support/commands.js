@@ -23,3 +23,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+import * as recommendationFactory from "../factories/recommendationFactory.js";
+
+Cypress.Commands.add("createRecommendation", () => {
+    const recommendationData = recommendationFactory.createRecommendationData();
+    cy.request(
+        "POST",
+        "http://localhost:5000/recommendations",
+        recommendationData
+    );
+});
+
+Cypress.Commands.add("resetDB", () => {
+    cy.request("DELETE", "http://localhost:5000/reset-database");
+})

@@ -10,7 +10,7 @@
     "dev": "nodemon src/server.ts",
     "prisma:reset": "prisma migrate reset",
     "prisma:migrate": "prisma migrate dev",
-    "test": "dotenv -e .env.test -- npx prisma migrate dev",
+    "test": "jest ",
     "test:unit": "clear && dotenv -e .env.test cross-env NODE_OPTIONS=--experimental-vm-modules jest -- -i --coverage --testPathPattern=tests/unit",
     "test:intg": "dotenv -e .env.test prisma migrate dev && cross-env NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --testPathPattern=./tests/intg"
 

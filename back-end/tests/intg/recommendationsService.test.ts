@@ -115,16 +115,3 @@ describe('GET /recommendations/top/:amount', () => {
 afterAll(async () => {
     await prisma.$disconnect()
 })
-/*
-
-/GET, /recommendations
-✕ should return 10 recommendations (13129 ms)
-✕ should return last 10 recommendations (12727 ms)
-/GET, /recommendations/:id
-✓ should return recommendation by id (3556 ms)
-/GET, /recommendations/random
-✓ should return status code 404 with no recommendations (141 ms)
-✕ should return a random recommendation (13625 ms)
-GET /recommendations/top/:amount
-✕ should return top recommendations (14135 ms)
-*/

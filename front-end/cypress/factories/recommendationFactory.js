@@ -5,7 +5,7 @@ if (typeof window === "undefined") {
 }
 
 
-const playlists:{name:string,id:string,max:number}[] = [
+const playlists= [
   {
     name: "most-viewed",
     id: "PL15B1E77BB5708555",
@@ -33,7 +33,7 @@ const playlists:{name:string,id:string,max:number}[] = [
   },
 ];
 
-const app :{playlist:object,index:string,baseURL:string,queryStrings:string, iframeSrc:string}= {
+const app = {
   playlist: {},
   index: null,
   baseURL: `https://www.youtube.com/embed/?list={0}&index={1}`,
@@ -43,7 +43,7 @@ const app :{playlist:object,index:string,baseURL:string,queryStrings:string, ifr
 };
 
 
-function generateRandom(num:number) {
+function generateRandom(num) {
   return Math.floor(Math.random() * num);
 }
 
@@ -61,7 +61,7 @@ function getEmbedMusicVideoUrl() {
 
 }
 
-async function getMainSiteYoutubeMusicVideoUrl(embedUrl:string) {
+async function getMainSiteYoutubeMusicVideoUrl(embedUrl) {
   if (embedUrl == null) {
     throw new Error("embedUrl is null");
   }
@@ -108,7 +108,7 @@ export async function getRandomMusicVideoUrl(preventEmbedded) {
 }
 
 
-export async function getRandomNameMusicYtb(youtubeLink:string){
+export async function getRandomNameMusicYtb(youtubeLink){
  
   const response= await axios.get(youtubeLink)
   const nome = await response.data.split("title>")[1].slice(0,-2);
@@ -116,4 +116,12 @@ export async function getRandomNameMusicYtb(youtubeLink:string){
   return nome;
 }
 
+export async function createRecommendationData(){
+  const youtubeLink = await getRandomMusicVideoUrl(true);
+  const name = getRandomNameMusicYtb(youtubeLink)
+  return {
+      name,
+      youtubeLink,
+  }
+}
 
